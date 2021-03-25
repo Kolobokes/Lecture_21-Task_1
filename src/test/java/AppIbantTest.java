@@ -35,7 +35,21 @@ public class AppIbantTest {
         val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
 
         val privateOfficePage= verificationPage.validVerify(verificationCode);
+        val transferPage = privateOfficePage.transferMoney("001");
+        transferPage.transfer("100");
     }
 
+    @Test
+    void CheckCardBalanceTest(){
 
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getAuthInfo();
+        val verificationPage = loginPage.validLogin(authInfo);
+        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
+
+        val privateOfficePage= verificationPage.validVerify(verificationCode);
+
+        privateOfficePage.checkCardBalance("001");
+    }
 }
