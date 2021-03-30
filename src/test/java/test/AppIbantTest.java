@@ -4,6 +4,7 @@ import data.DataHelper;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import page.LoginPage;
+import page.PrivateOfficePage;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -21,7 +22,9 @@ public class AppIbantTest {
         val verificationPage = loginPage.validLogin(authInfo);
         val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
 
-        verificationPage.validVerify(verificationCode);
+        val privateOfficePage = verificationPage.validVerify(verificationCode);
+        privateOfficePage.PrivateOfficePage();
+
     }
 
     @Test
@@ -36,6 +39,8 @@ public class AppIbantTest {
         val privateOfficePage= verificationPage.validVerify(verificationCode);
         val transferPage = privateOfficePage.transferMoney("001");
         transferPage.transfer("100", DataHelper.senderCount());
+
+        privateOfficePage.PrivateOfficePage();
     }
 
     @Test

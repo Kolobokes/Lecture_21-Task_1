@@ -1,7 +1,9 @@
 package page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.conditions.Visible;
 import lombok.val;
 
 import java.lang.reflect.Array;
@@ -14,6 +16,10 @@ public class PrivateOfficePage {
     private String cardInfo;
     private ElementsCollection replenishButtons = $$("[data-test-id=action-deposit]");
     private ElementsCollection cards = $$(".list__item");
+
+    public void PrivateOfficePage() {
+        $(withText("Ваши карты")).shouldBe(Condition.visible);
+    }
 
     public int checkCardBalance(String cardNumber) {
 
