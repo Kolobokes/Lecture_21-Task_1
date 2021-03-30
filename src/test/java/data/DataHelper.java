@@ -1,3 +1,5 @@
+package data;
+
 import lombok.Value;
 
 public class DataHelper {
@@ -24,5 +26,9 @@ public class DataHelper {
 
     public static VerificationCode getVerificationCodeFor(AuthInfo authInfo) {
         return new VerificationCode("12345");
+    }
+
+    public static String senderCount() {
+        return "5559000000000001";
     }
 }

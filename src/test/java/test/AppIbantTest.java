@@ -1,20 +1,19 @@
-import com.codeborne.selenide.SelenideElement;
+package test;
+
+import data.DataHelper;
 import lombok.val;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
+import page.LoginPage;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class AppIbantTest {
 
     @Test
-    void CorrectAuthorizationTest(){
+    void correctAuthorizationTest(){
 
         open("http://localhost:9999");
         val loginPage = new LoginPage();
@@ -26,7 +25,7 @@ public class AppIbantTest {
     }
 
     @Test
-    void RemittanceTest(){
+    void remittanceTest(){
 
         open("http://localhost:9999");
         val loginPage = new LoginPage();
@@ -36,11 +35,11 @@ public class AppIbantTest {
 
         val privateOfficePage= verificationPage.validVerify(verificationCode);
         val transferPage = privateOfficePage.transferMoney("001");
-        transferPage.transfer("100");
+        transferPage.transfer("100", DataHelper.senderCount());
     }
 
     @Test
-    void CheckCardBalanceTest(){
+    void checkCardBalanceTest(){
 
         open("http://localhost:9999");
         val loginPage = new LoginPage();
@@ -50,6 +49,14 @@ public class AppIbantTest {
 
         val privateOfficePage= verificationPage.validVerify(verificationCode);
 
-        privateOfficePage.checkCardBalance("001");
+        int cardBalanceBeforeTransaction = privateOfficePage.checkCardBalance("001");
+        int cardBalanceAfterTransactionExpected = cardBalanceBeforeTransaction + 100;
+
+        val transferPage = privateOfficePage.transferMoney("001");
+        transferPage.transfer("100", DataHelper.senderCount());
+
+        int cardBalanceAfterTransactionActual = privateOfficePage.checkCardBalance("001");
+
+        assertEquals(cardBalanceAfterTransactionExpected, cardBalanceAfterTransactionActual);
     }
 }
